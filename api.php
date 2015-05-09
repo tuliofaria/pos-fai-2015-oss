@@ -1,11 +1,9 @@
 <?php
+
+    $conn = mysql_connect("localhost", "root", "123456");
+    $db = mysql_select_db("oss");
+
     $json = file_get_contents('php://input');
+    $method = $_SERVER["REQUEST_METHOD"];
 
-    $telefones = array();
-    for($i=0; $i<30; $i++){
-        $telefones[] = array(
-            "ddd"=>$i.$i,
-            "num"=>$i.$i.$i);
-    };
-
-    echo json_encode($telefones);
+    echo $method;

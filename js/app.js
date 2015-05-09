@@ -8,6 +8,7 @@
             function($scope, ClienteService){
                 // controller da aplicacao
                 $scope.telefones = ClienteService.query();
+                ClienteService.update({ id: 1 });
 
                 $scope.novo = function(){
                     $scope.telefones.push({ddd: "35", num: "xxx"});
