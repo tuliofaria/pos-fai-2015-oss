@@ -17,7 +17,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body ng-controller="ProdutosController">
+  <body>
     
     <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -73,24 +73,14 @@
       </div><!-- /.container-fluid -->
     </nav>
 
-    <div>
-            <h1>Telefones</h1>
-            <table class="table table-condensed">
-              <tr ng-repeat="telefone in telefones">
-                    <td>{{telefone.ddd}}</td>
-                    <td>{{telefone.num}}</td>
-              </tr>
-            </table>
-            <input type="text" ng-model="telefones" />
-            <br>
-            <input type="button" ng-click="novo()" value="Clica aqui!" />
-    </div>
+    <div ng-view></div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/angular.min.js"></script>
     <script src="js/angular-resource.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/app.js"></script>
   </body>
