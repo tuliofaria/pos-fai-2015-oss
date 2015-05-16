@@ -10,6 +10,8 @@
     $parts = explode("/", $res);
 
     if($method=="GET"){
+        header('HTTP/1.0 401 Unauthorized');
+        exit;
         if(isset($parts[2])){
             $q = mysql_query("select * from clientes where id = ".$parts[2]);
             $d = mysql_fetch_array($q);

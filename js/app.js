@@ -1,9 +1,58 @@
 
     var app = angular.module("oss", ["ngResource", "ngRoute"]);
 
+    // register the interceptor as a service
+    app.factory('authInterceptor', function($q, $location) {
+      return {
+        /*/ optional method
+        'request': function(config) {
+          // do something on success
+          return config;
+        },
+
+        // optional method
+       'requestError': function(rejection) {
+          // do something on error
+          if (canRecover(rejection)) {
+            return responseOrNewPromise
+          }
+          return $q.reject(rejection);
+        },
+
+
+
+        // optional method
+        'response': function(response) {
+          // do something on success
+          console.log("intercepted!");
+          return response;
+        },*/
+
+        // optional method
+       'responseError': function(rejection) {
+          // do something on error
+          /*if (canRecover(rejection)) {
+            return responseOrNewPromise
+          }*/
+          if(rejection.status==401){
+            $location.path("/login");
+            return $q.reject(rejection);
+          }
+        }
+      };
+    });
+
+    app.config(['$httpProvider', function($httpProvider){
+        $httpProvider.interceptors.push('authInterceptor');
+    }]);
+
     app.config(['$routeProvider',
       function($routeProvider) {
         $routeProvider.
+          when('/login', {
+            templateUrl: 'partials/clientes-list.html',
+            //controller: 'ClientesController'
+          }).
           when('/clientes', {
             templateUrl: 'partials/clientes-list.html',
             controller: 'ClientesController'
