@@ -57,6 +57,10 @@
             templateUrl: 'partials/clientes-list.html',
             controller: 'ClientesController'
           }).
+          when('/ordens', {
+            templateUrl: 'partials/ordem-servico-list.html',
+            controller: 'OrdemServicoController'
+          }).
           when('/cliente/:clienteId', {
             templateUrl: 'partials/clientes-edit.html',
             controller: 'ClientesEditController'
@@ -121,9 +125,53 @@
         ]
     );
 
+    //Ordem de Servico CONTROLLER -> NESSE CARA IREMOS FAZER INSERT, READ, DELETE
+    app.controller("OrdemServicoController", 
+        [
+            "$scope",
+            "OrdemServicoService",
+            function($scope, OrdemServicoService){
+                $scope.novo = {
+                    valor: ""
+                };
+
+                $scope.ordens = OrdemServicoService.query();
+                //ClienteService.update({ id: 1 });
+                //INSERIR NOVA ORDEM DE SERVICO
+                $scope.novaOrdemServico = function(){
+                    OrdemServicoService.post($scope.novo, function(){
+                        OrdemServicoService.query(function(ordens){
+                            $scope.ordens = ordens;
+                        });
+                    });
+                    $scope.mostrarForm = false;
+                }
+                //EXCLUIR A ORDEM DE SERVICO
+                $scope.removeOrdemServico = function(ordem){
+                    OrdemServicoService.delete({ id: ordem.id }, function(){
+                        OrdemServicoService.query(function(os){
+                            $scope.os = os;
+                        });
+                    });
+                }
+            }
+        ]
+    );
+
     app.factory('ClienteService', ['$resource',
       function($resource){
         return $resource('api.php?res=/cliente/:id', {}, {
+          query:  { method: 'GET', params:{ id:'' }, isArray: true },
+          queryById:  { method: 'GET', params:{ id: '@id' }, isArray: false },
+          post:   { method: 'POST' },
+          update: { method: 'PUT', params: { id: '@id'}},
+          remove: { method: 'DELETE' }
+        });
+     }]);
+
+     app.factory('OrdemServicoService', ['$resource',
+      function($resource){
+        return $resource('api.php?res=/ordens/:id', {}, {
           query:  { method: 'GET', params:{ id:'' }, isArray: true },
           queryById:  { method: 'GET', params:{ id: '@id' }, isArray: false },
           post:   { method: 'POST' },

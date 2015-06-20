@@ -8,8 +8,8 @@
     <div class="alert alert-info" ng-hide="clientes.length>0">Nenhum cliente cadastrado.</div>
     <table class="table table-condensed" ng-show="clientes.length>0">
       <tr ng-repeat="cliente in clientes">
-            <td>{{cliente.nome}}</td>
-            <td>{{cliente.cpf_cnpj}}</td>
-            <td><a href="#/cliente/{{cliente.id}}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-edit"></i></a> <button ng-click="removeCliente(cliente)" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button></td>
-      </tr>
-    </table>
+        <td>{{cliente.nome}}</td>
+        <td>{{cliente.cpf_cnpj}}</td>
+        <td><a href="#/cliente/{{cliente.id}}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-edit"></i></a> <button ng-click="removeCliente(cliente)" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button></td>
+    </tr>
+</table>
