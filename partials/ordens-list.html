@@ -1,0 +1,33 @@
+    <h1>Ordens de Serviço</h1>
+
+    <input type="button" ng-click="mostrarForm=!mostrarForm" value="Nova Ordem Serviço" class="btn" />
+
+    <form class="well" ng-show="mostrarForm" ng-init="mostrarForm=false">
+
+        <!-- ng-model associa a variavel gerada no app.js/controller ao formulario -->
+
+        Abertura: <input type="date" ng-model="novaordem.data_abertura" /><br>
+        Finalizado: <input type="date" ng-model="novaordem.data_finalizado" /><br>
+        Valor: <input type="text" ng-model="novaordem.valor" /><br>
+        Contato: <input type="text" ng-model="novaordem.contato_id" /><br>
+        Cliente: <input type="text" ng-model="novaordem.cliente_id" /><br>
+        
+
+        <!-- novaOrdem() metodo no app.js/controller que chama o metodo post -->
+
+        <input type="button" ng-click="novaOrdem()" value="Salvar" class="btn" />
+
+    </form>
+    <div class="alert alert-info" ng-hide="ordens.length>0">Nenhum ordem de serviço cadastrada.</div>
+
+    <table class="table table-condensed" ng-show="ordens.length>0">
+      <tr ng-repeat="ordem in ordens">
+            <td>{{ordem.data_abertura}}</td>
+            <td>{{ordem.data_finalizado}}</td>
+            <td>{{ordem.valor}}</td>
+            <td>{{ordem.contato}}</td>
+            <td>{{ordem.cliente}}</td>
+            <td><a href="#/ordem/{{ordem.id}}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-edit"></i></a> 
+                <button ng-click="removeOrdem(ordem)" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button></td>
+      </tr>
+    </table>
