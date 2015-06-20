@@ -1,6 +1,6 @@
 <?php
 
-    $conn = mysql_connect("localhost", "root", "123456");
+    $conn = mysql_connect("localhost", "root", "");
     $db = mysql_select_db("oss");
 
     $json = file_get_contents('php://input');
@@ -38,5 +38,6 @@
             }
         }
     }
+	
     echo json_encode($result);
     exit;

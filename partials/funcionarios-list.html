@@ -1,0 +1,16 @@
+    <h1>Funcionários</h1>
+    <input type="button" ng-click="mostrarForm=!mostrarForm" value="Novo funcionário" class="btn" />
+    <form class="well" ng-show="mostrarForm" ng-init="mostrarForm=false">
+        Nome: <input type="text" ng-model="novo.nome" /><br>
+        Email: <input type="email" ng-model="novo.email" /><br>
+		Senha: <input type="password" ng-model="novo.senha" /><br>
+        <input type="button" ng-click="novoFuncionario()" value="Salvar" class="btn" />
+    </form>
+    <div class="alert alert-info" ng-hide="funcionarios.length>0">Nenhum funcionário cadastrado.</div>
+    <table class="table table-condensed" ng-show="funcionarios.length>0">
+      <tr ng-repeat="funcionario in funcionarios">
+            <td>{{funcionario.nome}}</td>
+            <td>{{funcionario.email}}</td>
+            <td><a href="#/funcionario/{{funcionario.id}}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-edit"></i></a> <button ng-click="removeFuncionario(funcionario)" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button></td>
+      </tr>
+    </table>
