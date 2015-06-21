@@ -5,9 +5,7 @@
             $d = mysql_fetch_array($q);
             return $d;
         }
-        public function getAll(){
-            $q = mysql_query("select * from produtos");
-            $d = mysql_fetch_array($q);
+        public function getAll(){           
             $produtos = array();
             $q = mysql_query("select * from produtos");
             while($d = mysql_fetch_array($q)){

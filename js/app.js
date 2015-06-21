@@ -225,13 +225,13 @@ app.controller("CardapiosController",
                     cardapio_id: ""
                 };
 
-                $scope.cardapios = CardapioService.query({id: $routeParams.produtoId});
+                $scope.cardapios = CardapioService.query({produto: $routeParams.produtoId});
                 $scope.produto = ProdutoService.queryById({id: $routeParams.produtoId});
                 $scope.produtos = ProdutoService.query();
 
                 $scope.novoCardapio = function() {
                     CardapioService.post($scope.novo, function() {
-                        CardapioService.query(function(cardapios) {
+                        CardapioService.query({produto: $routeParams.produtoId}, function(cardapios) {
                             $scope.cardapios = cardapios;
                         });
                     });
@@ -239,7 +239,7 @@ app.controller("CardapiosController",
                 }
                 $scope.removeCardapio = function(cardapio) {
                     CardapioService.delete({id: cardapio.id}, function() {
-                        CardapioService.query(function(cardapios) {
+                        CardapioService.query({id: $routeParams.produtoId}, function(cardapios) {
                             $scope.cardapios = cardapios;
                         });
                     });
@@ -262,28 +262,27 @@ app.controller("CardapiosEditController",
                     cardapio_id: "",
                     produto: ""
                 };
-                $scope.novo = CardapioService.queryAll({produto:$routeParams.produtoId, id: $routeParams.cardapioId});                
-                $scope.produtos = ProdutoService.query();
 
+                $scope.novo = CardapioService.queryById({produto: $routeParams.produtoId, id: $routeParams.cardapioId});
+                $scope.produto = ProdutoService.queryById({id: $routeParams.produtoId});
+                $scope.produtos = ProdutoService.query();
 
                 $scope.salvarCardapio = function() {
                     CardapioService.update($scope.novo, function() {
-                        $location.path("/cardapios");
+                        $location.path("/produtos");
                     });
                 }
-
             }
         ]
         );
 
 app.factory('CardapioService', ['$resource',
     function($resource) {
-        return $resource('api.php?res=/cardapio/:id', {}, {
-            query: {method: 'GET', params: {id: '@id'}, isArray: true},
-            queryById: {method: 'GET', params: {id: '@id'}, isArray: false},
-            queryAll: {method: 'GET', params: {produto: '@produto',id: '@id'}, isArray: true},
+        return $resource('api.php?res=/cardapio/:produto/:id', {}, {
+            query: {method: 'GET', params: {produto: '@produto', id: ''}, isArray: true},
+            queryById: {method: 'GET', params: {produto: '@produto', id: '@id'}, isArray: false},
             post: {method: 'POST'},
-            update: {method: 'PUT', params: {id: '@id'}},
+            update: {method: 'PUT', params: {produto: '@produto', id: '@id'}},
             remove: {method: 'DELETE'}
         });
     }]);

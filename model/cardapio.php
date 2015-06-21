@@ -5,11 +5,9 @@
             $d = mysql_fetch_array($q);
             return $d;
         }
-        public function getAll(){
-            $q = mysql_query("select c.*,(select p.nome from produtos p where p.id = c.cardapio_id) as produto  from cardapios c ");
-            $d = mysql_fetch_array($q);
+        public function getAll($produtoId){        
             $cardapios = array();
-            $q = mysql_query("select c.*,(select p.nome from produtos p where p.id = c.cardapio_id) as produto  from cardapios c");
+            $q = mysql_query("select c.*,(select p.nome from produtos p where p.id = c.cardapio_id) as produto  from cardapios c where c.produto_id = ".$produtoId);
             while($d = mysql_fetch_array($q)){
                 $cardapios[] = $d;
             }
