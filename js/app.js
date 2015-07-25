@@ -53,6 +53,7 @@
             templateUrl: 'partials/clientes-list.html',
             //controller: 'ClientesController'
           }).
+
           when('/clientes', {
             templateUrl: 'partials/clientes-list.html',
             controller: 'ClientesController'
@@ -61,10 +62,97 @@
             templateUrl: 'partials/clientes-edit.html',
             controller: 'ClientesEditController'
           }).
+
+          when('/equipamentos',{
+            templateUrl: 'partials/equipamentos-list.html',
+            controller: 'EquipamentosController'
+          }).
+          when('/equipamento/:equipamentoId',{
+            templateUrl: 'partials/equipamentos-edit.html',
+            controller:'EquipamentosEditController'
+          }).
+
+          when('/ordens',{
+            templateUrl: 'partials/ordens-list.html',
+            controller: 'OrdensController'
+          }).
+          when('/ordem/:ordemId',{
+            templateUrl: 'partials/ordens-edit.html',
+            controller:'OrdensEditController'
+          }).
+
+
           otherwise({
             redirectTo: '/clientes'
           });
       }]);
+
+    app.controller("OrdensController", 
+        [
+            "$scope",
+            "OrdemService",
+            function($scope, OrdemService){
+                $scope.novaordem = {
+                    data_abertura: "",
+                    data_finalizado: "",
+                    valor: "",
+                    contato_id: "",
+                    cliente_id: ""
+                };
+
+                $scope.ordens = OrdemService.query();
+                $scope.novaOrdem = function(){
+                    OrdemService.post($scope.novaordem, function(){
+                        OrdemService.query(function(ordens){
+                            $scope.ordens = ordens;
+                        });
+                    });
+                    $scope.mostrarForm = false;
+                }
+                $scope.removeOrdem = function(ordem){
+                    OrdemService.delete({ id: ordem.id }, function(){
+                        OrdemService.query(function(ordens){
+                            $scope.ordens = ordens;
+                        });
+                    });
+                }
+            }
+        ]
+    );
+
+    app.controller("EquipamentosController", 
+        [
+            "$scope",
+            "EquipamentoService",
+            function($scope, EquipamentoService){
+                $scope.novoeqp = {
+                    nome: "",
+                    descricao: "",
+                    patrimonio: "",
+                    observacoes: "",
+                    cliente_id: "",
+                    contato_id: ""
+                };
+
+                $scope.equipamentos = EquipamentoService.query();
+                $scope.novoEquipamento = function(){
+                    EquipamentoService.post($scope.novoeqp, function(){
+                        EquipamentoService.query(function(equipamentos){
+                            $scope.equipamentos = equipamentos;
+                        });
+                    });
+                    $scope.mostrarForm = false;
+                }
+                $scope.removeEquipamento = function(equipamento){
+                    EquipamentoService.delete({ id: equipamento.id }, function(){
+                        EquipamentoService.query(function(equipamentos){
+                            $scope.equipamentos = equipamentos;
+                        });
+                    });
+                }
+            }
+        ]
+    );
 
     app.controller("ClientesController", 
         [
@@ -98,6 +186,34 @@
         ]
     );
 
+// controller
+
+    app.controller("OrdensEditController", 
+        [
+            "$scope",
+            "$routeParams",
+            "$location",
+            "OrdemService",
+            function($scope, $routeParams, $location, OrdemService){
+                $scope.novaordem = {
+                    data_abertura: "",
+                    data_finalizado: "",
+                    valor: "",
+                    contato_id: "",
+                    cliente_id: ""
+                };
+                $scope.novaordem = OrdemService.queryById({id: $routeParams.ordemId});
+
+                $scope.salvarOrdem = function(){
+                    OrdemService.update($scope.novaordem, function(){
+                        $location.path("/ordens");
+                    });
+                }
+                
+            }
+        ]
+    );
+
     app.controller("ClientesEditController", 
         [
             "$scope",
@@ -121,6 +237,33 @@
         ]
     );
 
+    app.controller("EquipamentosEditController", 
+        [
+            "$scope",
+            "$routeParams",
+            "$location",
+            "EquipamentoService",
+            function($scope, $routeParams, $location, EquipamentoService){
+                $scope.novoeqp = {
+                    nome: "",
+                    descricao: "",
+                    patrimonio: "",
+                    observacoes: ""
+                };
+                $scope.novoeqp = EquipamentoService.queryById({id: $routeParams.equipamentoId});
+
+                $scope.salvarEquipamento = function(){
+                    EquipamentoService.update($scope.novoeqp, function(){
+                        $location.path("/equipamentos");
+                    });
+                }
+            }
+        ]
+    );
+
+
+// service
+
     app.factory('ClienteService', ['$resource',
       function($resource){
         return $resource('api.php?res=/cliente/:id', {}, {
@@ -132,15 +275,24 @@
         });
      }]);
 
+    app.factory('EquipamentoService', ['$resource',
+      function($resource){
+        return $resource('api.php?res=/equipamento/:id', {}, {
+          query:  { method: 'GET', params:{ id:'' }, isArray: true },
+          queryById:  { method: 'GET', params:{ id: '@id' }, isArray: false },
+          post:   { method: 'POST' },
+          update: { method: 'PUT', params: { id: '@id'}},
+          remove: { method: 'DELETE' }
+        });
+     }]);
 
-
-
-
-
-
-   
-
-
-
-
-
+  app.factory('OrdemService', ['$resource',
+      function($resource){
+        return $resource('api.php?res=/ordem/:id', {}, {
+          query:  { method: 'GET', params:{ id:'' }, isArray: true },
+          queryById:  { method: 'GET', params:{ id: '@id' }, isArray: false },
+          post:   { method: 'POST' },
+          update: { method: 'PUT', params: { id: '@id'}},
+          remove: { method: 'DELETE' }
+        });
+     }]);

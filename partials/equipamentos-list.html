@@ -1,0 +1,32 @@
+    <h1>Equipamentos</h1>
+
+    <input type="button" ng-click="mostrarForm=!mostrarForm" value="Novo equipamento" class="btn" />
+
+    <form class="well" ng-show="mostrarForm" ng-init="mostrarForm=false">
+
+        <!-- ng-model associa a variavel gerada no app.js/controller ao formulario -->
+        
+        Nome: <input type="text" ng-model="novoeqp.nome" /><br>
+        Descricao: <input type="text" ng-model="novoeqp.descricao" /><br>
+        Patrimonio: <input type="text" ng-model="novoeqp.patrimonio" /><br>
+        Observacoes: <input type="text" ng-model="novoeqp.observacoes" /><br>
+        Cliente id: <input type="text" ng-model="novoeqp.cliente_id" /><br>
+        Produto id: <input type="text" ng-model="novoeqp.produto_id" /><br>
+
+        <!-- novoEquipamento() metodo no app.js/controller que chama o metodo post -->
+
+        <input type="button" ng-click="novoEquipamento()" value="Salvar" class="btn" />
+
+    </form>
+    <div class="alert alert-info" ng-hide="equipamentos.length>0">Nenhum equipamento cadastrado.</div>
+
+    <table class="table table-condensed" ng-show="equipamentos.length>0">
+      <tr ng-repeat="equipamento in equipamentos">
+            <td>{{equipamento.nome}}</td>
+            <td>{{equipamento.descricao}}</td>
+            <td>{{equipamento.patrimonio}}</td>
+            <td>{{equipamento.observacoes}}</td>
+            <td><a href="#/equipamento/{{equipamento.id}}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-edit"></i></a> 
+                <button ng-click="removeEquipamento(equipamento)" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button></td>
+      </tr>
+    </table>

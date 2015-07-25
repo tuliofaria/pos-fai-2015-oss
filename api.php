@@ -1,6 +1,6 @@
 <?php
 
-    $conn = mysql_connect("localhost", "root", "123456");
+    $conn = mysql_connect("localhost", "root", "");
     $db = mysql_select_db("oss");
 
     $json = file_get_contents('php://input');
@@ -22,6 +22,7 @@
             }
 
             // espera-se ter uma classe com o mesmo nome no arquivo
+            
             $model = new $modelClass();
             if($method=="GET"){
                 if($param1!=""){
