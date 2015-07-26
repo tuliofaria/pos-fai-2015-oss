@@ -1,0 +1,14 @@
+    <h1>Ordem de Servico</h1>
+    <input type="button" ng-click="mostrarForm=!mostrarForm" value="Nova Ordem de Serviço" class="btn" />
+    <form class="well" ng-show="mostrarForm" ng-init="mostrarForm=false">
+        Valor: <input type="text" ng-model="novo.valor" /><br/><br/>
+        <input type="button" ng-click="novaOrdemServico()" value="Salvar" class="btn" />
+    </form>
+    <div class="alert alert-info" ng-hide="ordens.length>0">Nenhuma ordem de serviço cadastrada.</div>
+    <table class="table table-condensed" ng-show="ordens.length>0">
+      <tr ng-repeat="os in ordens">
+            <td>{{os.valor}}</td>
+            <td><!--a href="#/ordem-servico/{{os.id}}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-edit"></i></a--> 
+                <button ng-click="removeOrdemServico(os)" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button></td>
+      </tr>
+</table>
