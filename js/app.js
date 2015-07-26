@@ -82,6 +82,14 @@
           }).
 
 
+		  when('/funcionarios',{
+			templateUrl: 'partials/funcionarios-list.html',
+			controller: 'FuncionariosController'
+		  }).
+		  when('/funcionario/:funcionarioId',{
+			templateUrl: 'partials/funcionarios-edit.html',
+			controller: 'FuncionariosEditController'
+		  }).
           otherwise({
             redirectTo: '/clientes'
           });
@@ -161,7 +169,9 @@
             function($scope, ClienteService){
                 $scope.novo = {
                     nome: "",
-                    cpf_cnpj: ""
+                    cpf_cnpj: "",
+					email:"",
+					observacoes:""
                 };
 
                 $scope.clientes = ClienteService.query();
@@ -223,7 +233,9 @@
             function($scope, $routeParams, $location, ClienteService){
                 $scope.novo = {
                     nome: "",
-                    cpf_cnpj: ""
+                    cpf_cnpj: "",
+					email:"",
+					observacoes:"",
                 };
                 $scope.novo = ClienteService.queryById({id: $routeParams.clienteId});
 
@@ -286,9 +298,68 @@
         });
      }]);
 
-  app.factory('OrdemService', ['$resource',
+/** Funcionários **/
+
+app.controller("FuncionariosController", 
+        [
+            "$scope",
+            "FuncionarioService",
+            function($scope, FuncionarioService){
+                $scope.novo = {
+                    nome: "",
+                    email: "",
+					senha:""
+                };
+
+                $scope.funcionarios = FuncionarioService.query();
+                //ClienteService.update({ id: 1 });
+
+                $scope.novoFuncionario = function(){
+                    FuncionarioService.post($scope.novo, function(){
+                        FuncionarioService.query(function(funcionarios){
+                            $scope.funcionarios = funcionarios;
+                        });
+                    });
+                    $scope.mostrarForm = false;
+                }
+                $scope.removeFuncionario = function(funcionario){
+                    FuncionarioService.delete({ id: funcionario.id }, function(){
+                        FuncionarioService.query(function(funcionarios){
+                            $scope.funcionarios = funcionarios;
+                        });
+                    });
+                }
+            }
+        ]
+    );
+
+	app.controller("FuncionariosEditController", 
+        [
+            "$scope",
+            "$routeParams",
+            "$location",
+            "FuncionarioService",
+            function($scope, $routeParams, $location, FuncionarioService){
+                $scope.novo = {
+                    nome: "",
+                    email: "",
+					senha:""
+                };
+                $scope.novo = FuncionarioService.queryById({id: $routeParams.funcionarioId});
+
+                $scope.salvarFuncionario = function(){
+                    FuncionarioService.update($scope.novo, function(){
+                        $location.path("/funcionarios");
+                    });
+                }
+                
+            }
+        ]
+    );
+
+    app.factory('FuncionarioService', ['$resource',
       function($resource){
-        return $resource('api.php?res=/ordem/:id', {}, {
+        return $resource('api.php?res=/funcionario/:id', {}, {
           query:  { method: 'GET', params:{ id:'' }, isArray: true },
           queryById:  { method: 'GET', params:{ id: '@id' }, isArray: false },
           post:   { method: 'POST' },
@@ -296,3 +367,9 @@
           remove: { method: 'DELETE' }
         });
      }]);
+   
+
+
+
+
+

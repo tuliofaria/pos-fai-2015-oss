@@ -16,11 +16,11 @@
             return $clientes;
         }
         public function insert($obj){
-            mysql_query("insert into clientes (nome, cpf_cnpj) values('".$obj->nome."', '".$obj->cpf_cnpj."')");
+            mysql_query("insert into clientes (nome, cpf_cnpj, email, observacoes, created, modified) values('".$obj->nome."', '".$obj->cpf_cnpj."', '".$obj->email."', '".$obj->observacoes."', '".date('Y-m-d H:i:s')."', '".date('Y-m-d H:i:s')."')");
             return mysql_insert_id();
         }
         public function update($obj){
-            mysql_query("update clientes set nome = '".$obj->nome."', cpf_cnpj='".$obj->cpf_cnpj."' where id = ".$obj->id);
+            mysql_query("update clientes set nome = '".$obj->nome."', cpf_cnpj='".$obj->cpf_cnpj."', email = '".$obj->email."', observacoes = '".$obj->observacoes."', modified = '".date('Y-m-d H:i:s')."' where id = ".$obj->id);
             return true;
         }
         public function delete($id){
