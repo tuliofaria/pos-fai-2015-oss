@@ -1,0 +1,7 @@
+<?php if(isset($_GET["err"])) echo 'Faio'; ?>
+<h1>Login</h1>
+<form class="well">
+    E-mail:<input type="email" ng-model="usuario.email"/><br>
+    Senha:<input type="password" ng-model="novo.senha"/><br>
+    <input type="submit" ng-click="entrar()"/><br>
+</form>
