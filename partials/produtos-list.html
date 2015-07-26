@@ -1,0 +1,15 @@
+    <h1>Produtos</h1>
+    <input type="button" ng-click="mostrarForm=!mostrarForm" value="Novo produto" class="btn" />
+    <form class="well" ng-show="mostrarForm" ng-init="mostrarForm=false">
+        Nome: <input type="text" ng-model="novo.nome" /><br>        
+        <input type="button" ng-click="novoProduto()" value="Salvar" class="btn" />
+    </form>
+    <div class="alert alert-info" ng-hide="produtos.length>0">Nenhum produto cadastrado.</div>
+    <table class="table table-condensed" ng-show="produtos.length>0">
+      <tr ng-repeat="produto in produtos">
+            <td>{{produto.nome}}</td>            
+            <td><a href="#/produto/{{produto.id}}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-edit"></i></a> 
+                <a href="#/cardapios/{{produto.id}}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-plus"></i></a> 
+                <button ng-click="removeProduto(produto)" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button></td>
+      </tr>
+    </table>
